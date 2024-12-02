@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "AUser")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User {
+public class AUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
@@ -21,7 +21,6 @@ public class User {
 
     private String password;
 
-
     @Enumerated(EnumType.STRING)
-    private Role role = Role.ROLE_USER;
+    private ARole aRole;
 }

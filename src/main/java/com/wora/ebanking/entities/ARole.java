@@ -1,6 +1,6 @@
 package com.wora.ebanking.entities;
 
-public enum Role {
+public enum ARole {
     ROLE_USER,
     ROLE_ADMIN
 }

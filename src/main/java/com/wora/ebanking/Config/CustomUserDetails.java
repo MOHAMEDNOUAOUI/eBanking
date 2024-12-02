@@ -1,8 +1,8 @@
 package com.wora.ebanking.Config;
 
+import com.wora.ebanking.entities.AUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import com.wora.ebanking.entities.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -10,25 +10,25 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final AUser AUser;
 
-    public CustomUserDetails(User user) {
-        this.user = user;
+    public CustomUserDetails(AUser AUser) {
+        this.AUser = AUser;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        return List.of(new SimpleGrantedAuthority(AUser.getARole().name()));
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return AUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return AUser.getUsername();
     }
 
     @Override

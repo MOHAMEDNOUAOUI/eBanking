@@ -1,7 +1,7 @@
 package com.wora.ebanking.service;
 
 import com.wora.ebanking.Config.CustomUserDetails;
-import com.wora.ebanking.entities.User;
+import com.wora.ebanking.entities.AUser;
 import com.wora.ebanking.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +17,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        AUser AUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new CustomUserDetails(user);
+        return new CustomUserDetails(AUser);
     }
 }
