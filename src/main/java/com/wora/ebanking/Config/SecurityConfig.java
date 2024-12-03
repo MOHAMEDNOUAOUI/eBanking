@@ -1,5 +1,6 @@
 package com.wora.ebanking.Config;
 
+import com.wora.ebanking.Exceptions.CustomAuthenticationEntryPoint;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 
 @Configuration
@@ -21,18 +23,24 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 
     private final CustomUserDetailsService userDetailsService;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        http
                .csrf(csrf -> csrf.disable())
-               .httpBasic(HttpBasic -> Customizer.withDefaults())
+               .httpBasic(HttpBasic -> HttpBasic.authenticationEntryPoint(customAuthenticationEntryPoint))
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authorizeHttpRequests(auth -> auth
                        .requestMatchers("/api/users/register" , "/api/contact" , "/api/notices").permitAll()
-                       .requestMatchers("/api/users/**").authenticated()
                        .requestMatchers("/api/users/").hasRole("ADMIN")
-               );
+                       .requestMatchers("/api/myLoans" , "/api/myAccount" , "/api/myCards" , "/api/myBalance")
+                       .hasAnyRole("USER")
+                       .anyRequest().authenticated()
+               )
+               .exceptionHandling(exception -> exception
+                       .accessDeniedHandler(accessDeniedHandler));
         return http.build();
     }
 

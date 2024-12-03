@@ -7,6 +7,7 @@ import com.wora.ebanking.entities.AUser;
 import com.wora.ebanking.service.Impl.UserServiceImpl;
 import com.wora.ebanking.service.UserService;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers(   ) {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
