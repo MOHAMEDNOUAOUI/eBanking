@@ -7,7 +7,8 @@ import com.wora.ebanking.entities.AUser;
 import java.util.List;
 
 public interface UserService {
-    List<UserResponseDTO> getAllUsers();
     void registerUser(UserDTO userDto);
     UserResponseDTO getAccount();
+    List<UserResponseDTO> getAllUsers();
+    void deleteUser(Long id);
 }

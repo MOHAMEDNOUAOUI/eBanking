@@ -50,8 +50,6 @@ public class UserController {
         return ResponseEntity.ok("User registered successfully!");
     }
 
-
-
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {

@@ -1,4 +1,4 @@
-package com.wora.ebanking.service;
+package com.wora.ebanking.Config;
 
 import com.wora.ebanking.entities.AUser;
 import com.wora.ebanking.repository.UserRepository;

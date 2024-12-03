@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -50,5 +49,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream().map(userMapper::toDTO).toList();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (userRepository.existsById(id)){
+            userRepository.deleteById(id);
+        }
     }
 }
