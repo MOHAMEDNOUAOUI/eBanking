@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -47,6 +48,7 @@ public class SecurityConfig{
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authorizeHttpRequests(auth -> auth
                        .requestMatchers("/api/users/register" , "/api/contact" , "/api/notices").permitAll()
+                       .requestMatchers(HttpMethod.PUT , "/api/users/passwordChanger").authenticated()
                        .requestMatchers("/api/users/").hasRole("ADMIN")
                        .requestMatchers("/api/myLoans" , "/api/myAccount" , "/api/myCards" , "/api/myBalance")
                        .hasAnyRole("USER")

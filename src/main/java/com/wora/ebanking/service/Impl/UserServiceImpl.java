@@ -1,5 +1,6 @@
 package com.wora.ebanking.service.Impl;
 
+import com.wora.ebanking.DTO.PasswordupdateDTO;
 import com.wora.ebanking.DTO.UserDTO;
 import com.wora.ebanking.DTO.UserResponseDTO;
 import com.wora.ebanking.Exceptions.UsernameAlreadyExistsException;
@@ -49,6 +50,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream().map(userMapper::toDTO).toList();
+    }
+
+    @Override
+    public UserResponseDTO getUserByUserName(String userName) {
+        AUser AUser = userRepository.findByUsername(userName).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userMapper.toDTO(AUser);
+    }
+
+    @Override
+    public UserResponseDTO updateRole(String username) {
+        AUser AUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Account not found"));
+        AUser.setARole(ARole.ROLE_ADMIN);
+        AUser updateUser = userRepository.save(AUser);
+        return userMapper.toDTO(updateUser);
+    }
+
+    @Override
+    public void updatePassword(PasswordupdateDTO passwordupdateDTO) {
+        if (!passwordupdateDTO.getPassword().equals(passwordupdateDTO.getPasswordVerify())) {
+            throw new RuntimeException("The password doesnt match");
+        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        AUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Account not found"));
+        if (passwordEncoder.matches(passwordupdateDTO.getPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordupdateDTO.getPassword()));
+        }else {
+            throw new RuntimeException("The password doesnt match");
+        }
+        userRepository.save(user);
     }
 
     @Override

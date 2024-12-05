@@ -1,6 +1,7 @@
 package com.wora.ebanking.controller;
 
 
+import com.wora.ebanking.DTO.PasswordupdateDTO;
 import com.wora.ebanking.DTO.UserDTO;
 import com.wora.ebanking.DTO.UserResponseDTO;
 import com.wora.ebanking.entities.AUser;
@@ -56,6 +57,22 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+
+    @GetMapping("/users/{username}")
+    public ResponseEntity<UserResponseDTO> getUserByName(@PathVariable("username") String username ) {
+        return ResponseEntity.ok(userService.getUserByUserName(username));
+    }
+
+    @PutMapping("/users/{username}/updateRole")
+    public ResponseEntity<UserResponseDTO> updateRole(@PathVariable("username") String username){
+        return ResponseEntity.ok(userService.updateRole(username));
+    }
+
+    @PutMapping("/users/passwordChanger")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordupdateDTO passwordupdateDTO) {
+        userService.updatePassword(passwordupdateDTO);
+        return ResponseEntity.ok("Password changed successfully!");
+    }
 
 
 }
